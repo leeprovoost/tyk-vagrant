@@ -11,7 +11,6 @@ apt-add-repository -y ppa:brightbox/ruby-ng >/dev/null 2>&1
 apt-get -y update >/dev/null 2>&1
 
 install 'development tools' build-essential
-
 install Git git
 install Redis redis-server
 install MongoDB mongodb-org
@@ -25,7 +24,7 @@ sudo dpkg -i /tmp/tyk.linux.amd64_1.7.1-1_all.deb
 
 # Copy config file
 echo 'copying default configuration file'
-cp -f /vagrant/tyk.conf /etc/tyk/tyk.conf
+sudo cp -f /vagrant/tyk.conf /etc/tyk/tyk.conf
 
 # Needed for docs generation.
 update-locale LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8
