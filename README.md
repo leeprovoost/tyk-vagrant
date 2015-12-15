@@ -2,6 +2,11 @@
 
 Vagrant script for Tyk API Gateway https://tyk.io/
 
+Covers:
+
+* Tyk Gateway 1.9.0
+* Tyk Dashboard 0.9.7
+
 ## Installation
 
 Install [Vagrant](http://docs.vagrantup.com/v2/installation/) and [Virtualbox](https://www.virtualbox.org/wiki/Downloads).
@@ -20,74 +25,50 @@ vagrant up
 
 ## How to use
 
-Log into your vagrant box:
+Open a terminal and log into your vagrant box:
 
 ```
 vagrant ssh
 ```
 
-Start tyk:
+Run Tyk configuration scripts (replace XXX.XXX.XXX.XXX with your host computer's IP address):
 
 ```
-tyk --conf=/etc/tyk/tyk.conf
+sudo /opt/tyk-gateway/install/setup.sh --dashboard=1 --listenport=8080 --redishost=localhost --redisport=6379 --domain="" --mongo=mongodb://localhost/tyk_analytics
+
+sudo /opt/tyk-dashboard/install/setup.sh --listenport=3000 --redishost=localhost --redisport=6379 --mongo=mongodb://localhost/tyk_analytics --tyk_api_hostname=$HOSTNAME --tyk_node_hostname=http://localhost --tyk_node_port=8080 --portal_root=/portal --domain="XXX.XXX.XXX.XXX"
 ```
 
-Open a new terminal window, log into your vagrant box:
+If you need some more info on tweaking the configuration, have a look at the Tyk [documentation](https://tyk.io/v1.9/setup/vagrant-setup/).
+
+Start the Tyk services now:
 
 ```
-vagrant ssh
+sudo service tyk-gateway start
+sudo service tyk-dashboard start
 ```
 
-Go to the Tyk Dashboard Directory:
+Final step is to run the configurator to create a test account. Open a new terminal, go to your project directory and run from your *host* machine (Replace the XXX.XXX.XXX.XXX with your computer's IP address):
 
 ```
-cd /home/vagrant/tyk-analytics-v0.9.5.1
+sudo ./init.sh XXX.XXX.XXX.XXX
 ```
 
-Then start your Tyk Dashboard:
+If all goes well, you should see now something like:
 
 ```
-./tyk-analytics --neworg --newuser
+Creating Organisation
+ORGID: 566ff039a8f3e81ecf000001
+Adding new user
+USER AUTH: 3e997cec843945dc734c7cf530c2c149
+NEW ID: 566ff039cdc5a98e593f3ab4
+Setting password
+
+DONE
+====
+Login at http://XXX.XXX.XXX.XXX:3000/
+User: iqo1tov7rn@default.com
+Pass: test123
 ```
 
-Answer the questions as following:
-
-```
-INFO[0000] Loading configuration from ./tyk_analytics.conf
-INFO[0000] Connecting to redis on: localhost:6379
-INFO[0000] Creating a new org...
-
-Organisation name:  ACME
-Organisation slug:  am
-New organisation ID: 55c33ea9a8f3e82088000001
-
-INFO[0033] Creating a new user...
-
-First name: Lee
-Last name:  Provoost
-Email address:  youremailaddress@example.com
-
-Organisations:
---------------
-0. ACME
-Select user organisation (-1 for empty - only recommended for custom integrations): 0
-New password: Password123
-Re-enter password:  Password123
-
-INFO[0098] Tyk.io Analytics Dashboard 0.9.5
-INFO[0098] Copyright Jively Ltd. 2014
-INFO[0098] http://www.tyk.io
-INFO[0098] Listening on port: 3000
-```
-
-Open your browser now and go to: `http://localhost:3000`.
-
-Go in System Management to [Apis](http://localhost:3000/#/apis), click on Add new API on the right and fill in the details.
-
-## Useful references
-
-* http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/
-* https://tyk.io/v1.7/setup/dashboard-config/
-
-
-
+Open your browser now: http://XXX.XXX.XXX.XXX:3000/ and log in with the credentials you've been provided by the configuration script.

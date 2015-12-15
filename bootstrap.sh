@@ -16,19 +16,20 @@ install MongoDB mongodb-org
 install vim vim
 
 # Install Tyk
-echo 'downloading Tyk 1.7.1'
-wget https://github.com/lonelycode/tyk/releases/download/1.7.1/tyk.linux.amd64_1.7.1-1_all.deb -P /tmp
-echo 'installing Tyk 1.7.1'
-sudo dpkg -i /tmp/tyk.linux.amd64_1.7.1-1_all.deb
+echo 'downloading Tyk Gateway 1.9.0'
+wget https://github.com/TykTechnologies/tyk/releases/download/v1.9/tyk-gateway_1.9.0.0_amd64.deb -P /tmp
+echo 'installing Tyk Gateway 1.9.0'
+sudo dpkg -i /tmp/tyk-gateway_1.9.0.0_amd64.deb
 
 # Install Tyk Dashboard
-wget https://github.com/lonelycode/tyk/releases/download/1.7/tyk-dashboard-amd64-v0.9.5.1.tar.gz -P /tmp
-tar -xvzf /tmp/tyk-dashboard-amd64-v0.9.5.1.tar.gz
+echo 'downloading Tyk Dashboard 0.9.7'
+wget https://github.com/TykTechnologies/tyk/releases/download/v1.9/tyk-dashboard_0.9.7.0_amd64.deb -P /tmp
+echo 'installing Tyk Dashboard 0.9.7'
+sudo dpkg -i /tmp/tyk-dashboard_0.9.7.0_amd64.deb
 
-# Tyk config file
-echo 'copying default configuration file and make tyk dir writeable'
-sudo chmod -R 777 /etc/tyk
-sudo cp -f /vagrant/tyk.conf /etc/tyk/tyk.conf
+# Copy init script from vagrant box to host machine
+echo 'copying bootstrap script from vagrant box to host machine'
+cp /opt/tyk-dashboard/install/bootstrap.sh /vagrant/init.sh
 
 # Needed for docs generation.
 update-locale LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8
