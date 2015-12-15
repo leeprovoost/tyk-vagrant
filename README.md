@@ -48,7 +48,7 @@ sudo service tyk-gateway start
 sudo service tyk-dashboard start
 ```
 
-Final step is to run the configurator to create a test account. Open a new terminal, go to your project directory and run from your *host* machine (Replace the XXX.XXX.XXX.XXX with your computer's IP address):
+Final step is to run the configurator to create a test account. Open a new terminal, make sure you are now in your *host* machine, go to your project directory and run the following script (Replace the XXX.XXX.XXX.XXX with your computer's IP address):
 
 ```
 sudo ./init.sh XXX.XXX.XXX.XXX
